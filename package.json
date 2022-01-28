@@ -1,0 +1,6 @@
+{
+  "name": "elm-ffi-adobe",
+  "devDependencies": {
+    "elm-ffi": "github:pravdomil/elm-ffi"
+  }
+}
