@@ -29,15 +29,16 @@ fillColor (PathItem a) =
         |> Result.withDefault Nothing
 
 
-setFillColor : Adobe.Illustrator.Color.Color -> PathItem -> Task.Task JavaScript.Error PathItem
+setFillColor : Maybe Adobe.Illustrator.Color.Color -> PathItem -> Task.Task JavaScript.Error PathItem
 setFillColor color a =
     Adobe.Illustrator.Color.encode color
         |> Task.andThen
             (\v ->
-                JavaScript.run "a.a.fillColor = a.color"
+                JavaScript.run "(function() { a.a.filled = a.b; a.a.fillColor = a.c })()"
                     (Json.Encode.object
                         [ ( "a", a |> value )
-                        , ( "color", v )
+                        , ( "b", color /= Nothing |> Json.Encode.bool )
+                        , ( "c", v )
                         ]
                     )
                     (Json.Decode.succeed a)
@@ -65,15 +66,16 @@ strokeColor (PathItem a) =
         |> Result.withDefault Nothing
 
 
-setStrokeColor : Adobe.Illustrator.Color.Color -> PathItem -> Task.Task JavaScript.Error PathItem
+setStrokeColor : Maybe Adobe.Illustrator.Color.Color -> PathItem -> Task.Task JavaScript.Error PathItem
 setStrokeColor color a =
     Adobe.Illustrator.Color.encode color
         |> Task.andThen
             (\v ->
-                JavaScript.run "a.a.strokeColor = a.color"
+                JavaScript.run "(function() { a.a.stroked = a.b; a.a.strokeColor = a.c })()"
                     (Json.Encode.object
                         [ ( "a", a |> value )
-                        , ( "color", v )
+                        , ( "b", color /= Nothing |> Json.Encode.bool )
+                        , ( "c", v )
                         ]
                     )
                     (Json.Decode.succeed a)
