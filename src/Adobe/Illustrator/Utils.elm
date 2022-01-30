@@ -57,6 +57,21 @@ encodeBoundingBox a =
 --
 
 
+encodePoint2d : Point2d.Point2d Length.Meters coordinates -> Json.Decode.Value
+encodePoint2d a =
+    [ a |> Point2d.xCoordinate
+    , a |> Point2d.yCoordinate |> Quantity.negate
+    ]
+        |> Json.Encode.list
+            (\v ->
+                v |> Length.inPoints |> Json.Encode.float
+            )
+
+
+
+--
+
+
 tolerance : Length.Length
 tolerance =
     Length.millimeters 0.01
