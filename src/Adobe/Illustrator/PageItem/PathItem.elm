@@ -12,13 +12,6 @@ type PathItem
     = PathItem Json.Decode.Value
 
 
-filled : PathItem -> Bool
-filled (PathItem a) =
-    a
-        |> Json.Decode.decodeValue (Json.Decode.field "filled" Json.Decode.bool)
-        |> Result.withDefault False
-
-
 fillColor : PathItem -> Adobe.Illustrator.Color.Color
 fillColor (PathItem a) =
     a
@@ -43,13 +36,6 @@ setFillColor color a =
 
 
 --
-
-
-stroked : PathItem -> Bool
-stroked (PathItem a) =
-    a
-        |> Json.Decode.decodeValue (Json.Decode.field "stroked" Json.Decode.bool)
-        |> Result.withDefault False
 
 
 strokeColor : PathItem -> Adobe.Illustrator.Color.Color
