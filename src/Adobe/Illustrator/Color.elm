@@ -1,7 +1,6 @@
 module Adobe.Illustrator.Color exposing (..)
 
 import Adobe.Illustrator.Color.CMYK
-import Adobe.Illustrator.Color.None
 import Adobe.Illustrator.Color.RGB
 import JavaScript
 import Json.Decode
@@ -10,8 +9,7 @@ import Task
 
 
 type Color
-    = None Adobe.Illustrator.Color.None.None
-    | CMYK Adobe.Illustrator.Color.CMYK.CMYK
+    = CMYK Adobe.Illustrator.Color.CMYK.CMYK
     | RGB Adobe.Illustrator.Color.RGB.RGB
     | Unknown Json.Decode.Value
 
@@ -28,9 +26,6 @@ unknown =
 eq : Color -> Color -> Bool
 eq a b =
     case ( a, b ) of
-        ( None a2, None b2 ) ->
-            Adobe.Illustrator.Color.None.eq a2 b2
-
         ( CMYK a2, CMYK b2 ) ->
             Adobe.Illustrator.Color.CMYK.eq a2 b2
 
@@ -45,27 +40,53 @@ eq a b =
 --
 
 
-decoder : Json.Decode.Decoder Color
+decoder : Json.Decode.Decoder (Maybe Color)
 decoder =
     Json.Decode.oneOf
-        [ Adobe.Illustrator.Color.None.decoder |> Json.Decode.map None
-        , Adobe.Illustrator.Color.CMYK.decoder |> Json.Decode.map CMYK
-        , Adobe.Illustrator.Color.RGB.decoder |> Json.Decode.map RGB
-        , Json.Decode.value |> Json.Decode.map Unknown
+        [ noColorDecoder |> Json.Decode.map (\_ -> Nothing)
+        , Adobe.Illustrator.Color.CMYK.decoder |> Json.Decode.map (CMYK >> Just)
+        , Adobe.Illustrator.Color.RGB.decoder |> Json.Decode.map (RGB >> Just)
+        , Json.Decode.value |> Json.Decode.map (Unknown >> Just)
         ]
 
 
-encode : Color -> Task.Task JavaScript.Error Json.Decode.Value
+encode : Maybe Color -> Task.Task JavaScript.Error Json.Decode.Value
 encode a =
     case a of
-        None b ->
-            b |> Adobe.Illustrator.Color.None.encode
+        Just b ->
+            case b of
+                CMYK c ->
+                    c |> Adobe.Illustrator.Color.CMYK.encode
 
-        CMYK b ->
-            b |> Adobe.Illustrator.Color.CMYK.encode
+                RGB c ->
+                    c |> Adobe.Illustrator.Color.RGB.encode
 
-        RGB b ->
-            b |> Adobe.Illustrator.Color.RGB.encode
+                Unknown c ->
+                    c |> Task.succeed
 
-        Unknown b ->
-            b |> Task.succeed
+        Nothing ->
+            encodeNoColor
+
+
+
+--
+
+
+noColorDecoder : Json.Decode.Decoder ()
+noColorDecoder =
+    Json.Decode.field "typename" Json.Decode.string
+        |> Json.Decode.andThen
+            (\v ->
+                if v == "NoColor" then
+                    Json.Decode.succeed ()
+
+                else
+                    Json.Decode.fail "Not a NoColor."
+            )
+
+
+encodeNoColor : Task.Task JavaScript.Error Json.Decode.Value
+encodeNoColor =
+    JavaScript.run "new NoColor()"
+        Json.Encode.null
+        Json.Decode.value
