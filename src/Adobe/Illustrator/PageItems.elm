@@ -13,6 +13,13 @@ import Rectangle2d
 import Task
 
 
+createPath : Adobe.Illustrator.Document.Document -> Task.Task JavaScript.Error Adobe.Illustrator.PageItem.PathItem.PathItem
+createPath (Adobe.Illustrator.Document.Document a) =
+    JavaScript.run "a.pathItems.add()"
+        a
+        Adobe.Illustrator.PageItem.PathItem.decoder
+
+
 createRectangle :
     Adobe.Illustrator.Document.Document
     -> Rectangle2d.Rectangle2d Length.Meters coordinates
