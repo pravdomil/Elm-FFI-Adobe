@@ -13,20 +13,6 @@ import Rectangle2d
 import Task
 
 
-placeFile :
-    Adobe.Illustrator.Document.Document
-    -> Adobe.Illustrator.File.File
-    -> Task.Task JavaScript.Error Adobe.Illustrator.PageItem.PlacedItem.PlacedItem
-placeFile (Adobe.Illustrator.Document.Document doc) (Adobe.Illustrator.File.File file) =
-    JavaScript.run "(function () { var b = a.doc.placedItems.add(); b.file = a.file; return b; })()"
-        (Json.Encode.object
-            [ ( "doc", doc )
-            , ( "file", file )
-            ]
-        )
-        Adobe.Illustrator.PageItem.PlacedItem.decoder
-
-
 createRectangle :
     Adobe.Illustrator.Document.Document
     -> Rectangle2d.Rectangle2d Length.Meters coordinates
@@ -58,3 +44,17 @@ createRectangle (Adobe.Illustrator.Document.Document doc) a =
             ]
         )
         Adobe.Illustrator.PageItem.PathItem.decoder
+
+
+placeFile :
+    Adobe.Illustrator.Document.Document
+    -> Adobe.Illustrator.File.File
+    -> Task.Task JavaScript.Error Adobe.Illustrator.PageItem.PlacedItem.PlacedItem
+placeFile (Adobe.Illustrator.Document.Document doc) (Adobe.Illustrator.File.File file) =
+    JavaScript.run "(function () { var b = a.doc.placedItems.add(); b.file = a.file; return b; })()"
+        (Json.Encode.object
+            [ ( "doc", doc )
+            , ( "file", file )
+            ]
+        )
+        Adobe.Illustrator.PageItem.PlacedItem.decoder
