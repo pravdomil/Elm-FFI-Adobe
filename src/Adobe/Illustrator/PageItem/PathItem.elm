@@ -12,11 +12,21 @@ type PathItem
     = PathItem Json.Decode.Value
 
 
-fillColor : PathItem -> Adobe.Illustrator.Color.Color
+fillColor : PathItem -> Maybe Adobe.Illustrator.Color.Color
 fillColor (PathItem a) =
     a
-        |> Json.Decode.decodeValue (Json.Decode.field "fillColor" Adobe.Illustrator.Color.decoder)
-        |> Result.withDefault Adobe.Illustrator.Color.unknown
+        |> Json.Decode.decodeValue
+            (Json.Decode.field "filled" Json.Decode.bool
+                |> Json.Decode.andThen
+                    (\v ->
+                        if v then
+                            Json.Decode.field "fillColor" Adobe.Illustrator.Color.decoder
+
+                        else
+                            Json.Decode.succeed Nothing
+                    )
+            )
+        |> Result.withDefault Nothing
 
 
 setFillColor : Adobe.Illustrator.Color.Color -> PathItem -> Task.Task JavaScript.Error PathItem
@@ -38,11 +48,21 @@ setFillColor color a =
 --
 
 
-strokeColor : PathItem -> Adobe.Illustrator.Color.Color
+strokeColor : PathItem -> Maybe Adobe.Illustrator.Color.Color
 strokeColor (PathItem a) =
     a
-        |> Json.Decode.decodeValue (Json.Decode.field "strokeColor" Adobe.Illustrator.Color.decoder)
-        |> Result.withDefault Adobe.Illustrator.Color.unknown
+        |> Json.Decode.decodeValue
+            (Json.Decode.field "stroked" Json.Decode.bool
+                |> Json.Decode.andThen
+                    (\v ->
+                        if v then
+                            Json.Decode.field "strokeColor" Adobe.Illustrator.Color.decoder
+
+                        else
+                            Json.Decode.succeed Nothing
+                    )
+            )
+        |> Result.withDefault Nothing
 
 
 setStrokeColor : Adobe.Illustrator.Color.Color -> PathItem -> Task.Task JavaScript.Error PathItem
