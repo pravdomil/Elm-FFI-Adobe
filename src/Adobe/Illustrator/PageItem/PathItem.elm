@@ -1,15 +1,32 @@
 module Adobe.Illustrator.PageItem.PathItem exposing (..)
 
 import Adobe.Illustrator.Color
+import Adobe.Illustrator.Utils
 import JavaScript
 import Json.Decode
 import Json.Encode
 import Length
+import Point2d
 import Task
 
 
 type PathItem
     = PathItem Json.Decode.Value
+
+
+setPoints : List (Point2d.Point2d Length.Meters coordinates) -> PathItem -> Task.Task JavaScript.Error PathItem
+setPoints points a =
+    JavaScript.run "a.a.setEntirePath(a.b)"
+        (Json.Encode.object
+            [ ( "a", a |> value )
+            , ( "b", points |> Json.Encode.list Adobe.Illustrator.Utils.encodePoint2d )
+            ]
+        )
+        (Json.Decode.succeed a)
+
+
+
+--
 
 
 fillColor : PathItem -> Maybe Adobe.Illustrator.Color.Color
