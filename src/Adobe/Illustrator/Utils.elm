@@ -44,11 +44,11 @@ encodeBoundingBox a =
         |> BoundingBox2d.extrema
         |> (\v ->
                 Json.Encode.list
-                    Json.Encode.float
-                    [ Length.inPoints v.minX
-                    , -(Length.inPoints v.minY)
-                    , Length.inPoints v.maxX
-                    , -(Length.inPoints v.maxY)
+                    (Length.inPoints >> Json.Encode.float)
+                    [ v.minX
+                    , v.minY |> Quantity.negate
+                    , v.maxX
+                    , v.maxY |> Quantity.negate
                     ]
            )
 
