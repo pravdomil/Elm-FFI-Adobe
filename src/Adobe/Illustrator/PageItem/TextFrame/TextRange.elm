@@ -12,14 +12,14 @@ type TextRange
     = TextRange Json.Decode.Value
 
 
-fillColor : TextRange -> Adobe.Illustrator.Color.Color
+fillColor : TextRange -> Maybe Adobe.Illustrator.Color.Color
 fillColor (TextRange a) =
     a
         |> Json.Decode.decodeValue (Json.Decode.at [ "characterAttributes", "fillColor" ] Adobe.Illustrator.Color.decoder)
-        |> Result.withDefault Adobe.Illustrator.Color.unknown
+        |> Result.withDefault Nothing
 
 
-setFillColor : Adobe.Illustrator.Color.Color -> TextRange -> Task.Task JavaScript.Error TextRange
+setFillColor : Maybe Adobe.Illustrator.Color.Color -> TextRange -> Task.Task JavaScript.Error TextRange
 setFillColor color a =
     Adobe.Illustrator.Color.encode color
         |> Task.andThen
@@ -38,14 +38,14 @@ setFillColor color a =
 --
 
 
-strokeColor : TextRange -> Adobe.Illustrator.Color.Color
+strokeColor : TextRange -> Maybe Adobe.Illustrator.Color.Color
 strokeColor (TextRange a) =
     a
         |> Json.Decode.decodeValue (Json.Decode.at [ "characterAttributes", "strokeColor" ] Adobe.Illustrator.Color.decoder)
-        |> Result.withDefault Adobe.Illustrator.Color.unknown
+        |> Result.withDefault Nothing
 
 
-setStrokeColor : Adobe.Illustrator.Color.Color -> TextRange -> Task.Task JavaScript.Error TextRange
+setStrokeColor : Maybe Adobe.Illustrator.Color.Color -> TextRange -> Task.Task JavaScript.Error TextRange
 setStrokeColor color a =
     Adobe.Illustrator.Color.encode color
         |> Task.andThen
