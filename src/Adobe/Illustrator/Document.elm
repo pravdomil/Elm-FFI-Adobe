@@ -25,6 +25,17 @@ active =
         |> Task.onError (\_ -> Task.succeed Nothing)
 
 
+
+--
+
+
+selection : Document -> List Adobe.Illustrator.PageItem.PageItem
+selection (Document a) =
+    a
+        |> Json.Decode.decodeValue (Json.Decode.field "selection" (Json.Decode.list Adobe.Illustrator.PageItem.decoder))
+        |> Result.withDefault []
+
+
 setSelection : List Adobe.Illustrator.PageItem.PageItem -> Document -> Task.Task JavaScript.Error ()
 setSelection items (Document doc) =
     JavaScript.run "a.doc.selection = a.value"
