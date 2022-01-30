@@ -67,6 +67,17 @@ strokeWidth (PathItem a) =
         |> Result.withDefault (Length.points 1)
 
 
+setStrokeWidth : Length.Length -> PathItem -> Task.Task JavaScript.Error PathItem
+setStrokeWidth width a =
+    JavaScript.run "a.a.strokeWidth = a.b"
+        (Json.Encode.object
+            [ ( "a", a |> value )
+            , ( "b", width |> Length.inPoints |> Json.Encode.float )
+            ]
+        )
+        (Json.Decode.succeed a)
+
+
 
 --
 
