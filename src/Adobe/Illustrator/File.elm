@@ -6,7 +6,7 @@ import Json.Encode
 import Task
 
 
-{-| <https://github.com/pravdomil/Types-for-Adobe/blob/5053d9a06b6f7f4759bea9ea1bdf4f20eee14106/shared/JavaScript.d.ts#L1519>
+{-| <https://github.com/aenhancers/Types-for-Adobe/blob/5053d9a06b6f7f4759bea9ea1bdf4f20eee14106/shared/JavaScript.d.ts#L1519>
 -}
 type File
     = File Json.Decode.Value

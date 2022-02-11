@@ -15,7 +15,7 @@ import Task
 import Vector2d
 
 
-{-| <https://github.com/pravdomil/Types-for-Adobe/blob/5053d9a06b6f7f4759bea9ea1bdf4f20eee14106/Illustrator/2015.3/index.d.ts#L9700>
+{-| <https://github.com/aenhancers/Types-for-Adobe/blob/5053d9a06b6f7f4759bea9ea1bdf4f20eee14106/Illustrator/2015.3/index.d.ts#L9700>
 -}
 type PageItem
     = PathItem Adobe.Illustrator.PageItem.PathItem.PathItem

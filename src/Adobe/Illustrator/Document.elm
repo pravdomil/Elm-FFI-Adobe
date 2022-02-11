@@ -11,7 +11,7 @@ import Json.Encode
 import Task
 
 
-{-| <https://github.com/pravdomil/Types-for-Adobe/blob/5053d9a06b6f7f4759bea9ea1bdf4f20eee14106/Illustrator/2015.3/index.d.ts#L8312>
+{-| <https://github.com/aenhancers/Types-for-Adobe/blob/5053d9a06b6f7f4759bea9ea1bdf4f20eee14106/Illustrator/2015.3/index.d.ts#L8312>
 -}
 type Document
     = Document Json.Decode.Value
