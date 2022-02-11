@@ -1,5 +1,6 @@
 module Adobe.Illustrator.PageItem.PlacedItem exposing (..)
 
+import Adobe.Illustrator.Utils
 import Json.Decode
 
 
@@ -13,12 +14,5 @@ type PlacedItem
 
 decoder : Json.Decode.Decoder PlacedItem
 decoder =
-    Json.Decode.field "typename" Json.Decode.string
-        |> Json.Decode.andThen
-            (\v ->
-                if v == "PlacedItem" then
-                    Json.Decode.value |> Json.Decode.map PlacedItem
-
-                else
-                    Json.Decode.fail "Not a PlacedItem."
-            )
+    Adobe.Illustrator.Utils.classDecoder "PlacedItem"
+        (Json.Decode.value |> Json.Decode.map PlacedItem)

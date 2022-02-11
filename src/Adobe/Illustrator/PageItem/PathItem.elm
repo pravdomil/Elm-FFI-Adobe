@@ -123,15 +123,8 @@ setStrokeWidth width a =
 
 decoder : Json.Decode.Decoder PathItem
 decoder =
-    Json.Decode.field "typename" Json.Decode.string
-        |> Json.Decode.andThen
-            (\v ->
-                if v == "PathItem" then
-                    Json.Decode.value |> Json.Decode.map PathItem
-
-                else
-                    Json.Decode.fail "Not a PathItem."
-            )
+    Adobe.Illustrator.Utils.classDecoder "PathItem"
+        (Json.Decode.value |> Json.Decode.map PathItem)
 
 
 value : PathItem -> Json.Decode.Value

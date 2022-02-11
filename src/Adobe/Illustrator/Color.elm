@@ -2,6 +2,7 @@ module Adobe.Illustrator.Color exposing (..)
 
 import Adobe.Illustrator.Color.CMYK
 import Adobe.Illustrator.Color.RGB
+import Adobe.Illustrator.Utils
 import JavaScript
 import Json.Decode
 import Json.Encode
@@ -74,15 +75,8 @@ encode a =
 
 noColorDecoder : Json.Decode.Decoder ()
 noColorDecoder =
-    Json.Decode.field "typename" Json.Decode.string
-        |> Json.Decode.andThen
-            (\v ->
-                if v == "NoColor" then
-                    Json.Decode.succeed ()
-
-                else
-                    Json.Decode.fail "Not a NoColor."
-            )
+    Adobe.Illustrator.Utils.classDecoder "NoColor"
+        (Json.Decode.succeed ())
 
 
 encodeNoColor : Task.Task JavaScript.Error Json.Decode.Value
