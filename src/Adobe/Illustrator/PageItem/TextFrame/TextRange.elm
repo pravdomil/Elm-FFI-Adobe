@@ -71,6 +71,31 @@ strokeWidth (TextRange a) =
 --
 
 
+fontFamily : TextRange -> String
+fontFamily (TextRange a) =
+    a
+        |> Json.Decode.decodeValue (Json.Decode.at [ "characterAttributes", "textFont", "family" ] Json.Decode.string)
+        |> Result.withDefault ""
+
+
+fontStyle : TextRange -> String
+fontStyle (TextRange a) =
+    a
+        |> Json.Decode.decodeValue (Json.Decode.at [ "characterAttributes", "textFont", "style" ] Json.Decode.string)
+        |> Result.withDefault ""
+
+
+fontSize : TextRange -> Length.Length
+fontSize (TextRange a) =
+    a
+        |> Json.Decode.decodeValue (Json.Decode.at [ "characterAttributes", "size" ] (Json.Decode.float |> Json.Decode.map Length.points))
+        |> Result.withDefault (Length.points 1)
+
+
+
+--
+
+
 decoder : Json.Decode.Decoder TextRange
 decoder =
     Json.Decode.value |> Json.Decode.map TextRange
