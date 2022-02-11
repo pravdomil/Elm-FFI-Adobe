@@ -8,6 +8,51 @@ import Point2d
 import Quantity
 
 
+lengthEq : Length.Length -> Length.Length -> Bool
+lengthEq a b =
+    Quantity.equalWithin tolerance a b
+
+
+
+--
+
+
+pointEq : Point2d.Point2d Length.Meters coordinates -> Point2d.Point2d Length.Meters coordinates -> Bool
+pointEq a b =
+    Quantity.equalWithin tolerance (Point2d.xCoordinate a) (Point2d.xCoordinate b)
+        && Quantity.equalWithin tolerance (Point2d.yCoordinate a) (Point2d.yCoordinate b)
+
+
+encodePoint2d : Point2d.Point2d Length.Meters coordinates -> Json.Decode.Value
+encodePoint2d a =
+    [ a |> Point2d.xCoordinate
+    , a |> Point2d.yCoordinate |> Quantity.negate
+    ]
+        |> Json.Encode.list
+            (\v ->
+                v |> Length.inPoints |> Json.Encode.float
+            )
+
+
+
+--
+
+
+boundingBoxEq : BoundingBox2d.BoundingBox2d Length.Meters coordinates -> BoundingBox2d.BoundingBox2d Length.Meters coordinates -> Bool
+boundingBoxEq a b =
+    let
+        a2 =
+            a |> BoundingBox2d.extrema
+
+        b2 =
+            b |> BoundingBox2d.extrema
+    in
+    Quantity.equalWithin tolerance a2.minX b2.minX
+        && Quantity.equalWithin tolerance a2.maxX b2.maxX
+        && Quantity.equalWithin tolerance a2.minY b2.minY
+        && Quantity.equalWithin tolerance a2.maxY b2.maxY
+
+
 decodeBoundingBox : String -> Json.Decode.Value -> BoundingBox2d.BoundingBox2d Length.Meters coordinates
 decodeBoundingBox path a =
     let
@@ -55,47 +100,6 @@ encodeBoundingBox a =
 
 
 --
-
-
-encodePoint2d : Point2d.Point2d Length.Meters coordinates -> Json.Decode.Value
-encodePoint2d a =
-    [ a |> Point2d.xCoordinate
-    , a |> Point2d.yCoordinate |> Quantity.negate
-    ]
-        |> Json.Encode.list
-            (\v ->
-                v |> Length.inPoints |> Json.Encode.float
-            )
-
-
-
---
-
-
-lengthEq : Length.Length -> Length.Length -> Bool
-lengthEq a b =
-    Quantity.equalWithin tolerance a b
-
-
-pointEq : Point2d.Point2d Length.Meters coordinates -> Point2d.Point2d Length.Meters coordinates -> Bool
-pointEq a b =
-    Quantity.equalWithin tolerance (Point2d.xCoordinate a) (Point2d.xCoordinate b)
-        && Quantity.equalWithin tolerance (Point2d.yCoordinate a) (Point2d.yCoordinate b)
-
-
-boundingBoxEq : BoundingBox2d.BoundingBox2d Length.Meters coordinates -> BoundingBox2d.BoundingBox2d Length.Meters coordinates -> Bool
-boundingBoxEq a b =
-    let
-        a2 =
-            a |> BoundingBox2d.extrema
-
-        b2 =
-            b |> BoundingBox2d.extrema
-    in
-    Quantity.equalWithin tolerance a2.minX b2.minX
-        && Quantity.equalWithin tolerance a2.maxX b2.maxX
-        && Quantity.equalWithin tolerance a2.minY b2.minY
-        && Quantity.equalWithin tolerance a2.maxY b2.maxY
 
 
 tolerance : Length.Length
