@@ -96,6 +96,17 @@ fontSize (TextRange a) =
 --
 
 
+text : TextRange -> String
+text (TextRange a) =
+    a
+        |> Json.Decode.decodeValue (Json.Decode.field "contents" Json.Decode.string)
+        |> Result.withDefault ""
+
+
+
+--
+
+
 decoder : Json.Decode.Decoder TextRange
 decoder =
     Json.Decode.value |> Json.Decode.map TextRange
