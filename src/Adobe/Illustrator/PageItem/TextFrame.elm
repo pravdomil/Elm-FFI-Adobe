@@ -16,6 +16,13 @@ textRanges (TextFrame a) =
         |> Result.withDefault []
 
 
+paragraphs : TextFrame -> List Adobe.Illustrator.PageItem.TextFrame.TextRange.TextRange
+paragraphs (TextFrame a) =
+    a
+        |> Json.Decode.decodeValue (Json.Decode.field "paragraphs" (Json.Decode.list Adobe.Illustrator.PageItem.TextFrame.TextRange.decoder))
+        |> Result.withDefault []
+
+
 
 --
 
