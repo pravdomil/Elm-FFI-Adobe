@@ -72,11 +72,6 @@ encodePoint2d a =
 --
 
 
-tolerance : Length.Length
-tolerance =
-    Length.millimeters 0.01
-
-
 lengthEq : Length.Length -> Length.Length -> Bool
 lengthEq a b =
     Quantity.equalWithin tolerance a b
@@ -101,3 +96,8 @@ boundingBoxEq a b =
         && Quantity.equalWithin tolerance a2.maxX b2.maxX
         && Quantity.equalWithin tolerance a2.minY b2.minY
         && Quantity.equalWithin tolerance a2.maxY b2.maxY
+
+
+tolerance : Length.Length
+tolerance =
+    Length.millimeters 0.01
