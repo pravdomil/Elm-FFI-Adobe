@@ -1,6 +1,7 @@
 module Adobe.Illustrator.PageItem.TextFrame.TextRange exposing (..)
 
 import Adobe.Illustrator.Color
+import Adobe.Illustrator.Utils
 import JavaScript
 import Json.Decode
 import Json.Encode
@@ -109,7 +110,8 @@ text (TextRange a) =
 
 decoder : Json.Decode.Decoder TextRange
 decoder =
-    Json.Decode.value |> Json.Decode.map TextRange
+    Adobe.Illustrator.Utils.classDecoder "TextRange"
+        (Json.Decode.value |> Json.Decode.map TextRange)
 
 
 value : TextRange -> Json.Decode.Value

@@ -1,6 +1,7 @@
 module Adobe.Illustrator.PageItem.TextFrame exposing (..)
 
 import Adobe.Illustrator.PageItem.TextFrame.TextRange
+import Adobe.Illustrator.Utils
 import Json.Decode
 
 
@@ -29,12 +30,5 @@ paragraphs (TextFrame a) =
 
 decoder : Json.Decode.Decoder TextFrame
 decoder =
-    Json.Decode.field "typename" Json.Decode.string
-        |> Json.Decode.andThen
-            (\v ->
-                if v == "TextFrame" then
-                    Json.Decode.value |> Json.Decode.map TextFrame
-
-                else
-                    Json.Decode.fail "Not a TextFrame."
-            )
+    Adobe.Illustrator.Utils.classDecoder "TextFrame"
+        (Json.Decode.value |> Json.Decode.map TextFrame)

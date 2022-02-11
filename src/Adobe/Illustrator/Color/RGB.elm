@@ -1,5 +1,6 @@
 module Adobe.Illustrator.Color.RGB exposing (..)
 
+import Adobe.Illustrator.Utils
 import JavaScript
 import Json.Decode
 import Json.Encode
@@ -36,15 +37,7 @@ decoder =
                 (Json.Decode.field "green" Json.Decode.float)
                 (Json.Decode.field "blue" Json.Decode.float)
     in
-    Json.Decode.field "typename" Json.Decode.string
-        |> Json.Decode.andThen
-            (\v ->
-                if v == "RGBColor" then
-                    decoder_
-
-                else
-                    Json.Decode.fail "Not a RGBColor."
-            )
+    Adobe.Illustrator.Utils.classDecoder "RGBColor" decoder_
 
 
 encode : RGB -> Task.Task JavaScript.Error Json.Decode.Value

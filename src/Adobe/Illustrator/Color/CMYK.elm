@@ -1,5 +1,6 @@
 module Adobe.Illustrator.Color.CMYK exposing (..)
 
+import Adobe.Illustrator.Utils
 import JavaScript
 import Json.Decode
 import Json.Encode
@@ -69,15 +70,7 @@ decoder =
                 (Json.Decode.field "yellow" Json.Decode.float)
                 (Json.Decode.field "black" Json.Decode.float)
     in
-    Json.Decode.field "typename" Json.Decode.string
-        |> Json.Decode.andThen
-            (\v ->
-                if v == "CMYKColor" then
-                    decoder_
-
-                else
-                    Json.Decode.fail "Not a CMYKColor."
-            )
+    Adobe.Illustrator.Utils.classDecoder "CMYKColor" decoder_
 
 
 encode : CMYK -> Task.Task JavaScript.Error Json.Decode.Value

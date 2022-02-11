@@ -1,5 +1,6 @@
 module Adobe.Illustrator.File exposing (..)
 
+import Adobe.Illustrator.Utils
 import JavaScript
 import Json.Decode
 import Json.Encode
@@ -36,4 +37,5 @@ path (File a) =
 
 decoder : Json.Decode.Decoder File
 decoder =
-    Json.Decode.value |> Json.Decode.map File
+    Adobe.Illustrator.Utils.classDecoder "File"
+        (Json.Decode.value |> Json.Decode.map File)

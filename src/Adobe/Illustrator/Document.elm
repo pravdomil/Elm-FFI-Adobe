@@ -5,6 +5,7 @@ import Adobe.Illustrator.File
 import Adobe.Illustrator.PageItem
 import Adobe.Illustrator.PageItem.PathItem
 import Adobe.Illustrator.PageItem.TextFrame
+import Adobe.Illustrator.Utils
 import JavaScript
 import Json.Decode
 import Json.Encode
@@ -151,4 +152,5 @@ textFrames (Document a) =
 
 decoder : Json.Decode.Decoder Document
 decoder =
-    Json.Decode.value |> Json.Decode.map Document
+    Adobe.Illustrator.Utils.classDecoder "Document"
+        (Json.Decode.value |> Json.Decode.map Document)

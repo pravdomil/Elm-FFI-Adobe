@@ -31,4 +31,5 @@ resize box a =
 
 decoder : Json.Decode.Decoder Artboard
 decoder =
-    Json.Decode.value |> Json.Decode.map Artboard
+    Adobe.Illustrator.Utils.classDecoder "Artboard"
+        (Json.Decode.value |> Json.Decode.map Artboard)

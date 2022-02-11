@@ -102,6 +102,23 @@ encodeBoundingBox a =
 --
 
 
+classDecoder : String -> Json.Decode.Decoder a -> Json.Decode.Decoder a
+classDecoder name a =
+    Json.Decode.field "typename" Json.Decode.string
+        |> Json.Decode.andThen
+            (\v ->
+                if v == name then
+                    a
+
+                else
+                    Json.Decode.fail ("Not a " ++ name ++ ".")
+            )
+
+
+
+--
+
+
 tolerance : Length.Length
 tolerance =
     Length.millimeters 0.01
