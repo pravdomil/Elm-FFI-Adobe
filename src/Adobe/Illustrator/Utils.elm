@@ -58,8 +58,7 @@ decodeBoundingBox path a =
     let
         zeroBox : BoundingBox2d.BoundingBox2d units coordinates
         zeroBox =
-            BoundingBox2d.fromExtrema
-                { minX = Quantity.zero, maxX = Quantity.zero, minY = Quantity.zero, maxY = Quantity.zero }
+            BoundingBox2d.from Point2d.origin Point2d.origin
     in
     a
         |> Json.Decode.decodeValue (Json.Decode.field path boundingBoxDecoder)
