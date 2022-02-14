@@ -37,5 +37,4 @@ path (File a) =
 
 decoder : Json.Decode.Decoder File
 decoder =
-    Adobe.Illustrator.Utils.classDecoder "File"
-        (Json.Decode.value |> Json.Decode.map File)
+    Json.Decode.value |> Json.Decode.map File
