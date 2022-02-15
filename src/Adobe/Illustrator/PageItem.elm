@@ -63,6 +63,44 @@ remove a =
 --
 
 
+type ZOrder
+    = OneStepForward
+    | OneStepBackward
+    | ToFront
+    | ToBack
+
+
+changeZOrder : ZOrder -> PageItem -> Task.Task JavaScript.Error PageItem
+changeZOrder zOrder a =
+    let
+        order : String
+        order =
+            case zOrder of
+                OneStepForward ->
+                    "BRINGFORWARD"
+
+                OneStepBackward ->
+                    "SENDBACKWARD"
+
+                ToFront ->
+                    "BRINGTOFRONT"
+
+                ToBack ->
+                    "SENDTOBACK"
+    in
+    JavaScript.run "a.a.zOrder(ZOrderMethod[a.b])"
+        (Json.Encode.object
+            [ ( "a", a |> value )
+            , ( "b", order |> Json.Encode.string )
+            ]
+        )
+        (Json.Decode.succeed a)
+
+
+
+--
+
+
 scale : Float -> Float -> PageItem -> Task.Task JavaScript.Error PageItem
 scale scaleX scaleY a =
     JavaScript.run "a.a.resize(a.b, a.c)"
