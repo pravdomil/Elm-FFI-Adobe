@@ -118,11 +118,19 @@ folder (Document a) =
         |> Result.toMaybe
 
 
+
+--
+
+
 artboards : Document -> List Adobe.Illustrator.Artboard.Artboard
 artboards (Document a) =
     a
         |> Json.Decode.decodeValue (Json.Decode.field "artboards" (Json.Decode.list Adobe.Illustrator.Artboard.decoder))
         |> Result.withDefault []
+
+
+
+--
 
 
 pageItems : Document -> List Adobe.Illustrator.PageItem.PageItem
