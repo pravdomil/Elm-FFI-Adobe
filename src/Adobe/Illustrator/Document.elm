@@ -19,6 +19,13 @@ type Document
     = Document Json.Decode.Value
 
 
+opened : Task.Task JavaScript.Error (List Document)
+opened =
+    JavaScript.run "app.documents"
+        Json.Encode.null
+        (Json.Decode.list decoder)
+
+
 active : Task.Task JavaScript.Error (Maybe Document)
 active =
     JavaScript.run "app.activeDocument"
