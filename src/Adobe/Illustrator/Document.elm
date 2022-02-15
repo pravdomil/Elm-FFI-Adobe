@@ -1,6 +1,7 @@
 module Adobe.Illustrator.Document exposing (..)
 
 import Adobe.Illustrator.Artboard
+import Adobe.Illustrator.Color.Spot
 import Adobe.Illustrator.File
 import Adobe.Illustrator.PageItem
 import Adobe.Illustrator.PageItem.PathItem
@@ -98,6 +99,17 @@ setColorSpace a (Document _) =
     JavaScript.run "app.executeMenuCommand(a)"
         (Json.Encode.string cmd)
         (Json.Decode.succeed ())
+
+
+
+--
+
+
+spotColors : Document -> List Adobe.Illustrator.Color.Spot.Spot
+spotColors (Document a) =
+    a
+        |> Json.Decode.decodeValue (Json.Decode.field "spots" (Json.Decode.list Adobe.Illustrator.Color.Spot.decoder))
+        |> Result.withDefault []
 
 
 
