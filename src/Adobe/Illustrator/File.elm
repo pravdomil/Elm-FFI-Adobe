@@ -1,6 +1,5 @@
 module Adobe.Illustrator.File exposing (..)
 
-import Adobe.Illustrator.Utils
 import JavaScript
 import Json.Decode
 import Json.Encode
