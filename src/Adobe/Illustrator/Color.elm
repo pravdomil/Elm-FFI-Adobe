@@ -1,6 +1,6 @@
 module Adobe.Illustrator.Color exposing (..)
 
-import Adobe.Illustrator.Color.CMYK_
+import Adobe.Illustrator.Color.Cmyk
 import Adobe.Illustrator.Color.RGB
 import Adobe.Illustrator.Utils
 import JavaScript
@@ -10,7 +10,7 @@ import Task
 
 
 type Color
-    = CMYK Adobe.Illustrator.Color.CMYK_.CMYK
+    = CMYK Adobe.Illustrator.Color.Cmyk.CMYK
     | RGB Adobe.Illustrator.Color.RGB.RGB
     | Unknown Json.Decode.Value
 
@@ -28,7 +28,7 @@ eq : Color -> Color -> Bool
 eq a b =
     case ( a, b ) of
         ( CMYK a2, CMYK b2 ) ->
-            Adobe.Illustrator.Color.CMYK_.eq a2 b2
+            Adobe.Illustrator.Color.Cmyk.eq a2 b2
 
         ( RGB a2, RGB b2 ) ->
             Adobe.Illustrator.Color.RGB.eq a2 b2
@@ -45,7 +45,7 @@ decoder : Json.Decode.Decoder (Maybe Color)
 decoder =
     Json.Decode.oneOf
         [ noColorDecoder |> Json.Decode.map (\_ -> Nothing)
-        , Adobe.Illustrator.Color.CMYK_.decoder |> Json.Decode.map (CMYK >> Just)
+        , Adobe.Illustrator.Color.Cmyk.decoder |> Json.Decode.map (CMYK >> Just)
         , Adobe.Illustrator.Color.RGB.decoder |> Json.Decode.map (RGB >> Just)
         , Json.Decode.value |> Json.Decode.map (Unknown >> Just)
         ]
@@ -57,7 +57,7 @@ encode a =
         Just b ->
             case b of
                 CMYK c ->
-                    c |> Adobe.Illustrator.Color.CMYK_.encode
+                    c |> Adobe.Illustrator.Color.Cmyk.encode
 
                 RGB c ->
                     c |> Adobe.Illustrator.Color.RGB.encode

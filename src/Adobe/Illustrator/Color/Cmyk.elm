@@ -1,4 +1,4 @@
-module Adobe.Illustrator.Color.CMYK_ exposing (..)
+module Adobe.Illustrator.Color.Cmyk exposing (..)
 
 import Adobe.Illustrator.Utils
 import JavaScript
