@@ -8,14 +8,14 @@ import Quantity
 import Task
 
 
-type alias RGB =
+type alias Rgb =
     { red : Float
     , green : Float
     , blue : Float
     }
 
 
-eq : RGB -> RGB -> Bool
+eq : Rgb -> Rgb -> Bool
 eq a b =
     Quantity.equalWithin (Quantity.float 0.01) (Quantity.float a.red) (Quantity.float b.red)
         && Quantity.equalWithin (Quantity.float 0.01) (Quantity.float a.green) (Quantity.float b.green)
@@ -26,13 +26,13 @@ eq a b =
 --
 
 
-decoder : Json.Decode.Decoder RGB
+decoder : Json.Decode.Decoder Rgb
 decoder =
     let
-        decoder_ : Json.Decode.Decoder RGB
+        decoder_ : Json.Decode.Decoder Rgb
         decoder_ =
             Json.Decode.map3
-                RGB
+                Rgb
                 (Json.Decode.field "red" Json.Decode.float)
                 (Json.Decode.field "green" Json.Decode.float)
                 (Json.Decode.field "blue" Json.Decode.float)
@@ -40,7 +40,7 @@ decoder =
     Adobe.Illustrator.Utils.classDecoder "RGBColor" decoder_
 
 
-encode : RGB -> Task.Task JavaScript.Error Json.Decode.Value
+encode : Rgb -> Task.Task JavaScript.Error Json.Decode.Value
 encode a =
     JavaScript.run "(function () { var b = new RGBColor(); b.red = a[0]; b.green = a[1]; b.blue = a[2]; return b; })()"
         (Json.Encode.list Json.Encode.float [ a.red, a.green, a.blue ])
