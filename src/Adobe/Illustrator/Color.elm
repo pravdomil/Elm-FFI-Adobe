@@ -1,7 +1,7 @@
 module Adobe.Illustrator.Color exposing (..)
 
 import Adobe.Illustrator.Color.Cmyk
-import Adobe.Illustrator.Color.RGB_
+import Adobe.Illustrator.Color.Rgb
 import Adobe.Illustrator.Utils
 import JavaScript
 import Json.Decode
@@ -11,7 +11,7 @@ import Task
 
 type Color
     = CMYK Adobe.Illustrator.Color.Cmyk.CMYK
-    | RGB Adobe.Illustrator.Color.RGB_.RGB
+    | RGB Adobe.Illustrator.Color.Rgb.RGB
     | Unknown Json.Decode.Value
 
 
@@ -31,7 +31,7 @@ eq a b =
             Adobe.Illustrator.Color.Cmyk.eq a2 b2
 
         ( RGB a2, RGB b2 ) ->
-            Adobe.Illustrator.Color.RGB_.eq a2 b2
+            Adobe.Illustrator.Color.Rgb.eq a2 b2
 
         _ ->
             False
@@ -46,7 +46,7 @@ decoder =
     Json.Decode.oneOf
         [ noColorDecoder |> Json.Decode.map (\_ -> Nothing)
         , Adobe.Illustrator.Color.Cmyk.decoder |> Json.Decode.map (CMYK >> Just)
-        , Adobe.Illustrator.Color.RGB_.decoder |> Json.Decode.map (RGB >> Just)
+        , Adobe.Illustrator.Color.Rgb.decoder |> Json.Decode.map (RGB >> Just)
         , Json.Decode.value |> Json.Decode.map (Unknown >> Just)
         ]
 
@@ -60,7 +60,7 @@ encode a =
                     c |> Adobe.Illustrator.Color.Cmyk.encode
 
                 RGB c ->
-                    c |> Adobe.Illustrator.Color.RGB_.encode
+                    c |> Adobe.Illustrator.Color.Rgb.encode
 
                 Unknown c ->
                     c |> Task.succeed
