@@ -61,8 +61,8 @@ setSelection items (Document doc) =
 
 
 type ColorSpace
-    = CMYK
-    | RGB
+    = Cmyk
+    | Rgb
 
 
 colorSpace : Document -> ColorSpace
@@ -72,20 +72,20 @@ colorSpace (Document a) =
         |> Result.withDefault ""
         |> (\v ->
                 if v == "DocumentColorSpace.CMYK" then
-                    CMYK
+                    Cmyk
 
                 else
-                    RGB
+                    Rgb
            )
 
 
 colorSpaceToString : ColorSpace -> String
 colorSpaceToString a =
     case a of
-        CMYK ->
+        Cmyk ->
             "CMYK"
 
-        RGB ->
+        Rgb ->
             "RGB"
 
 
@@ -97,10 +97,10 @@ setColorSpace a (Document _) =
         cmd : String
         cmd =
             case a of
-                CMYK ->
+                Cmyk ->
                     "doc-color-cmyk"
 
-                RGB ->
+                Rgb ->
                     "doc-color-rgb"
     in
     JavaScript.run "app.executeMenuCommand(a)"

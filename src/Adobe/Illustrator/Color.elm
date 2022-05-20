@@ -10,8 +10,8 @@ import Task
 
 
 type Color
-    = CMYK Adobe.Illustrator.Color.Cmyk.CMYK
-    | RGB Adobe.Illustrator.Color.Rgb.RGB
+    = Cmyk Adobe.Illustrator.Color.Cmyk.Cmyk
+    | Rgb Adobe.Illustrator.Color.Rgb.Rgb
     | Unknown Json.Decode.Value
 
 
@@ -27,10 +27,10 @@ unknown =
 eq : Color -> Color -> Bool
 eq a b =
     case ( a, b ) of
-        ( CMYK a2, CMYK b2 ) ->
+        ( Cmyk a2, Cmyk b2 ) ->
             Adobe.Illustrator.Color.Cmyk.eq a2 b2
 
-        ( RGB a2, RGB b2 ) ->
+        ( Rgb a2, Rgb b2 ) ->
             Adobe.Illustrator.Color.Rgb.eq a2 b2
 
         _ ->
@@ -45,8 +45,8 @@ decoder : Json.Decode.Decoder (Maybe Color)
 decoder =
     Json.Decode.oneOf
         [ noColorDecoder |> Json.Decode.map (\_ -> Nothing)
-        , Adobe.Illustrator.Color.Cmyk.decoder |> Json.Decode.map (CMYK >> Just)
-        , Adobe.Illustrator.Color.Rgb.decoder |> Json.Decode.map (RGB >> Just)
+        , Adobe.Illustrator.Color.Cmyk.decoder |> Json.Decode.map (Cmyk >> Just)
+        , Adobe.Illustrator.Color.Rgb.decoder |> Json.Decode.map (Rgb >> Just)
         , Json.Decode.value |> Json.Decode.map (Unknown >> Just)
         ]
 
@@ -56,10 +56,10 @@ encode a =
     case a of
         Just b ->
             case b of
-                CMYK c ->
+                Cmyk c ->
                     c |> Adobe.Illustrator.Color.Cmyk.encode
 
-                RGB c ->
+                Rgb c ->
                     c |> Adobe.Illustrator.Color.Rgb.encode
 
                 Unknown c ->

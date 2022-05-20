@@ -8,7 +8,7 @@ import Quantity
 import Task
 
 
-type alias CMYK =
+type alias Cmyk =
     { cyan : Float
     , magenta : Float
     , yellow : Float
@@ -16,7 +16,7 @@ type alias CMYK =
     }
 
 
-eq : CMYK -> CMYK -> Bool
+eq : Cmyk -> Cmyk -> Bool
 eq a b =
     Quantity.equalWithin (Quantity.float 0.01) (Quantity.float a.cyan) (Quantity.float b.cyan)
         && Quantity.equalWithin (Quantity.float 0.01) (Quantity.float a.magenta) (Quantity.float b.magenta)
@@ -24,47 +24,47 @@ eq a b =
         && Quantity.equalWithin (Quantity.float 0.01) (Quantity.float a.key) (Quantity.float b.key)
 
 
-white : CMYK
+white : Cmyk
 white =
-    CMYK 0 0 0 0
+    Cmyk 0 0 0 0
 
 
-cyan : CMYK
+cyan : Cmyk
 cyan =
-    CMYK 100 0 0 0
+    Cmyk 100 0 0 0
 
 
-magenta : CMYK
+magenta : Cmyk
 magenta =
-    CMYK 0 100 0 0
+    Cmyk 0 100 0 0
 
 
-yellow : CMYK
+yellow : Cmyk
 yellow =
-    CMYK 0 0 100 0
+    Cmyk 0 0 100 0
 
 
-black : CMYK
+black : Cmyk
 black =
-    CMYK 0 0 0 100
+    Cmyk 0 0 0 100
 
 
-richBlack : CMYK
+richBlack : Cmyk
 richBlack =
-    CMYK 60 40 40 100
+    Cmyk 60 40 40 100
 
 
 
 --
 
 
-decoder : Json.Decode.Decoder CMYK
+decoder : Json.Decode.Decoder Cmyk
 decoder =
     let
-        decoder_ : Json.Decode.Decoder CMYK
+        decoder_ : Json.Decode.Decoder Cmyk
         decoder_ =
             Json.Decode.map4
-                CMYK
+                Cmyk
                 (Json.Decode.field "cyan" Json.Decode.float)
                 (Json.Decode.field "magenta" Json.Decode.float)
                 (Json.Decode.field "yellow" Json.Decode.float)
@@ -73,7 +73,7 @@ decoder =
     Adobe.Illustrator.Utils.classDecoder "CMYKColor" decoder_
 
 
-encode : CMYK -> Task.Task JavaScript.Error Json.Decode.Value
+encode : Cmyk -> Task.Task JavaScript.Error Json.Decode.Value
 encode a =
     JavaScript.run "(function () { var b = new CMYKColor(); b.cyan = a[0]; b.magenta = a[1]; b.yellow = a[2]; b.black = a[3]; return b; })()"
         (Json.Encode.list Json.Encode.float [ a.cyan, a.magenta, a.yellow, a.key ])
