@@ -1,4 +1,4 @@
-module Adobe.Illustrator.Color.RGB exposing (..)
+module Adobe.Illustrator.Color.RGB_ exposing (..)
 
 import Adobe.Illustrator.Utils
 import JavaScript
