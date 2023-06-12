@@ -35,8 +35,8 @@ fillColor (PathItem a) =
         |> Json.Decode.decodeValue
             (Json.Decode.field "filled" Json.Decode.bool
                 |> Json.Decode.andThen
-                    (\v ->
-                        if v then
+                    (\x ->
+                        if x then
                             Json.Decode.field "fillColor" Adobe.Illustrator.Color.decoder
 
                         else
@@ -50,12 +50,12 @@ setFillColor : Maybe Adobe.Illustrator.Color.Color -> PathItem -> Task.Task Java
 setFillColor color a =
     Adobe.Illustrator.Color.encode color
         |> Task.andThen
-            (\v ->
+            (\x ->
                 JavaScript.run "(function() { a.a.filled = a.b; a.a.fillColor = a.c })()"
                     (Json.Encode.object
                         [ ( "a", a |> value )
                         , ( "b", color /= Nothing |> Json.Encode.bool )
-                        , ( "c", v )
+                        , ( "c", x )
                         ]
                     )
                     (Json.Decode.succeed a)
@@ -72,8 +72,8 @@ strokeColor (PathItem a) =
         |> Json.Decode.decodeValue
             (Json.Decode.field "stroked" Json.Decode.bool
                 |> Json.Decode.andThen
-                    (\v ->
-                        if v then
+                    (\x ->
+                        if x then
                             Json.Decode.field "strokeColor" Adobe.Illustrator.Color.decoder
 
                         else
@@ -87,12 +87,12 @@ setStrokeColor : Maybe Adobe.Illustrator.Color.Color -> PathItem -> Task.Task Ja
 setStrokeColor color a =
     Adobe.Illustrator.Color.encode color
         |> Task.andThen
-            (\v ->
+            (\x ->
                 JavaScript.run "(function() { a.a.stroked = a.b; a.a.strokeColor = a.c })()"
                     (Json.Encode.object
                         [ ( "a", a |> value )
                         , ( "b", color /= Nothing |> Json.Encode.bool )
-                        , ( "c", v )
+                        , ( "c", x )
                         ]
                     )
                     (Json.Decode.succeed a)

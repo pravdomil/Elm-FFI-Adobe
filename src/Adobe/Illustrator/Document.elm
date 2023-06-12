@@ -70,8 +70,8 @@ colorSpace (Document a) =
     a
         |> Json.Decode.decodeValue (Json.Decode.at [ "documentColorSpace", "typename" ] Json.Decode.string)
         |> Result.withDefault ""
-        |> (\v ->
-                if v == "DocumentColorSpace.CMYK" then
+        |> (\x ->
+                if x == "DocumentColorSpace.CMYK" then
                     Cmyk
 
                 else

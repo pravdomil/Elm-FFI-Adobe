@@ -24,13 +24,13 @@ path (File a) =
     a
         |> Json.Decode.decodeValue (Json.Decode.field "fsName" Json.Decode.string)
         |> Result.toMaybe
-        |> (\v ->
-                case v of
+        |> (\x ->
+                case x of
                     Just "" ->
                         Nothing
 
                     _ ->
-                        v
+                        x
            )
 
 

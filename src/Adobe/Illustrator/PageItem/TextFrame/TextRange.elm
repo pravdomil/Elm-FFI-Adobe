@@ -24,11 +24,11 @@ setFillColor : Maybe Adobe.Illustrator.Color.Color -> TextRange -> Task.Task Jav
 setFillColor color a =
     Adobe.Illustrator.Color.encode color
         |> Task.andThen
-            (\v ->
+            (\x ->
                 JavaScript.run "a.a.characterAttributes.fillColor = a.color"
                     (Json.Encode.object
                         [ ( "a", a |> value )
-                        , ( "color", v )
+                        , ( "color", x )
                         ]
                     )
                     (Json.Decode.succeed a)
@@ -50,11 +50,11 @@ setStrokeColor : Maybe Adobe.Illustrator.Color.Color -> TextRange -> Task.Task J
 setStrokeColor color a =
     Adobe.Illustrator.Color.encode color
         |> Task.andThen
-            (\v ->
+            (\x ->
                 JavaScript.run "a.a.characterAttributes.strokeColor = a.color"
                     (Json.Encode.object
                         [ ( "a", a |> value )
-                        , ( "color", v )
+                        , ( "color", x )
                         ]
                     )
                     (Json.Decode.succeed a)

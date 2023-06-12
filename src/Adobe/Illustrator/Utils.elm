@@ -29,8 +29,8 @@ encodePoint2d a =
     , a |> Point2d.yCoordinate |> Quantity.negate
     ]
         |> Json.Encode.list
-            (\v ->
-                v |> Length.inPoints |> Json.Encode.float
+            (\x ->
+                x |> Length.inPoints |> Json.Encode.float
             )
 
 
@@ -86,13 +86,13 @@ encodeBoundingBox : BoundingBox2d.BoundingBox2d Length.Meters coordinates -> Jso
 encodeBoundingBox a =
     a
         |> BoundingBox2d.extrema
-        |> (\v ->
+        |> (\x ->
                 Json.Encode.list
                     (Length.inPoints >> Json.Encode.float)
-                    [ v.minX
-                    , v.minY |> Quantity.negate
-                    , v.maxX
-                    , v.maxY |> Quantity.negate
+                    [ x.minX
+                    , x.minY |> Quantity.negate
+                    , x.maxX
+                    , x.maxY |> Quantity.negate
                     ]
            )
 
@@ -105,8 +105,8 @@ classDecoder : String -> Json.Decode.Decoder a -> Json.Decode.Decoder a
 classDecoder name a =
     Json.Decode.field "typename" Json.Decode.string
         |> Json.Decode.andThen
-            (\v ->
-                if v == name then
+            (\x ->
+                if x == name then
                     a
 
                 else
